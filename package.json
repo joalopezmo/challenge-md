@@ -2,7 +2,12 @@
   "name": "@challenge-md/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "nx build host",
+    "test": "nx test host",
+    "serve": "nx serve host --devRemotes=dashboard",
+    "e2e-host": "nx e2e host --ui"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~17.1.0",

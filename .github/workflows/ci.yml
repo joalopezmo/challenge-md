@@ -30,9 +30,11 @@ jobs:
       - run: npm ci
       - uses: nrwl/nx-set-shas@v4
 
-      - run: nx build host
+      - run: npm run affected:lint -- --all
 
-      - run: nx test host --no-watch --no-results-output --code-coverage
+      - run: npm run build
+
+      - run: npm run test --no-watch --no-results-output --code-coverage
 
       # - run: npx nx-cloud record -- nx format:check
       # - run: npx nx affected -t lint test build e2e-ci
