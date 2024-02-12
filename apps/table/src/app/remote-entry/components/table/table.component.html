@@ -1,0 +1,57 @@
+<div>
+
+    <h1>Maquinas</h1>
+
+    <!-- Aqui van los botones de busqueda -->
+    <div class="search-buttons">
+        <button mat-raised-button color="primary" (click)="getHeroes() ">Todas</button>
+        <!-- <button mat-raised-button color="primary" (click)="get2dMachines()">2d Tech</button>
+        <button mat-raised-button color="primary" (click)="get3dMachines()">3d Tech</button>
+        <button mat-raised-button color="primary" (click)="clearInput($event)">Limpiar</button> -->
+    </div>
+
+
+    <!-- Aqui va el filtro aplicado sobre la tabla -->
+    <mat-form-field>
+        <mat-label>Filtro</mat-label>
+        <input matInput (keyup)="filterHeroes($event)" placeholder="Ex. i-5" #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- Manufacture Column -->
+        <ng-container matColumnDef="manufacturer">
+            <th mat-header-cell *matHeaderCellDef> Manufacturer </th>
+            <td mat-cell *matCellDef="let element"> {{element.manufacturer}} </td>
+        </ng-container>
+
+        <!-- Technology Column -->
+        <ng-container matColumnDef="technology">
+            <th mat-header-cell *matHeaderCellDef> Technology </th>
+            <td mat-cell *matCellDef="let element"> {{element.technology}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- se agrega paginacion basica -->
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+
+    </table>
+
+
+</div>

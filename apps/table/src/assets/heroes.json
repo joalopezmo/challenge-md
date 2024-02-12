@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "nombre": "Superman",
+    "descripcion": "El último hijo de Krypton, posee fuerza sobrehumana, velocidad, vuelo y visión de rayos X."
+  },
+  {
+    "id": 2,
+    "nombre": "Batman",
+    "descripcion": "El Caballero Oscuro, un vigilante que lucha contra el crimen en Ciudad Gótica sin poseer superpoderes."
+  },
+  {
+    "id": 3,
+    "nombre": "Wonder Woman",
+    "descripcion": "Una princesa amazona dotada de fuerza sobrehumana, agilidad y habilidades de combate."
+  },
+  {
+    "id": 4,
+    "nombre": "Spider-Man",
+    "descripcion": "Peter Parker, un estudiante de secundaria que adquiere habilidades arácnidas después de ser mordido por una araña radiactiva."
+  }
+]
