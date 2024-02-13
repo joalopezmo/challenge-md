@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "nx build host",
+    "build": "nx run host:build:production",
     "test": "nx test host",
     "serve": "nx serve host --devRemotes=dashboard",
     "e2e-host": "nx e2e host --ui"
