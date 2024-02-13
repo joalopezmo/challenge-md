@@ -13,4 +13,5 @@ export default withModuleFederation({
    *   ['app2', 'https://app2.example.com'],
    * ]
    */
+  remotes: [['table', 'http://localhost:4200/table']],
 });

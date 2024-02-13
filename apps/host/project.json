@@ -5,6 +5,7 @@
   "prefix": "challenge-md",
   "sourceRoot": "apps/host/src",
   "tags": [],
+  "implicitDependencies": ["table"],
   "targets": {
     "build": {
       "executor": "@nx/angular:webpack-browser",
@@ -73,6 +74,14 @@
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
         "buildTarget": "host:build"
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "rmdir -rf production || mkdir production && xcopy host\* production\ /s && xcopy table production\table /e /h /c /i",
+        "cwd": "dist"
       }
     }
   }

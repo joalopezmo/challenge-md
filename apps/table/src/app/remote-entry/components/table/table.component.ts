@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SharedMaterialUiModule } from '@challenge-md/ui';
@@ -9,14 +10,14 @@ import { TableServiceService } from '../../services/table-service.service';
 @Component({
   selector: 'challenge-md-table',
   standalone: true,
-  imports: [CommonModule, SharedMaterialUiModule],
+  imports: [CommonModule, SharedMaterialUiModule, HttpClientModule],
   providers: [TableServiceService],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
 export class TableComponent implements OnInit {
   heroes: BehaviorSubject<Heroe[]> = new BehaviorSubject<Heroe[]>([]);
-  displayedColumns: string[] = ['id', 'name', 'manufacturer', 'technology'];
+  displayedColumns: string[] = ['id', 'nombre', 'descripcion'];
   dataSource = new MatTableDataSource<Heroe>([]);
 
   constructor(private tableService: TableServiceService) {}
@@ -51,8 +52,8 @@ export class TableComponent implements OnInit {
     const filteredHeroes = this.heroes.value.filter((heroe) => {
       return (
         heroe.id ||
-        heroe.name.toLowerCase().includes(filterValue) ||
-        heroe.description.toLowerCase().includes(filterValue)
+        heroe.nombre.toLowerCase().includes(filterValue) ||
+        heroe.descripcion.toLowerCase().includes(filterValue)
       );
     });
     //se actualiza la tabla

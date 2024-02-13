@@ -41,7 +41,7 @@ export class TableServiceService {
       .pipe(
         map((heroes: Heroe[]) =>
           heroes.filter((heroe: Heroe) =>
-            heroe.name.toLowerCase().includes(term.toLowerCase())
+            heroe.nombre.toLowerCase().includes(term.toLowerCase())
           )
         )
       );
@@ -52,7 +52,7 @@ export class TableServiceService {
       .get<Heroe[]>(this.url)
       .pipe(
         map((heroes: Heroe[]) =>
-          heroes.sort((a: Heroe, b: Heroe) => a.name.localeCompare(b.name))
+          heroes.sort((a: Heroe, b: Heroe) => a.nombre.localeCompare(b.nombre))
         )
       );
   }
@@ -63,7 +63,7 @@ export class TableServiceService {
       .pipe(
         map((heroes: Heroe[]) =>
           heroes.filter((heroe: Heroe) =>
-            heroe.name.toLowerCase().includes(filter.toLowerCase())
+            heroe.nombre.toLowerCase().includes(filter.toLowerCase())
           )
         )
       );
