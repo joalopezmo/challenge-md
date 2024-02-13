@@ -80,8 +80,7 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "rmdir -rf production || mkdir production && xcopy host\* production\ /s && xcopy table production\table /e /h /c /i",
-        "cwd": "dist"
+        "command": "rm -rf production && mkdir production && cp -r dist/apps/host/* production && cp -r dist/apps/{table} production && http-server -p 3000 -a localhost production"
       }
     }
   }
