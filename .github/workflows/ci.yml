@@ -67,4 +67,4 @@ jobs:
 
       - name: Deploy
         if: success()
-        run: aws s3 sync ./dist/apps s3://elasticbeanstalk-eu-central-1-651475835863
+        run: aws s3 sync ./dist/apps/host s3://elasticbeanstalk-eu-central-1-651475835863
