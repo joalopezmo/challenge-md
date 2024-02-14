@@ -1,0 +1,14 @@
+<mat-dialog-content >
+    <h1 mat-dialog-title>Añadir Maquina</h1>
+    <form [formGroup]="form" (ngSubmit)="addHeroe($event)">
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <input matInput formControlName="descripcion">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Añadir</button>
+    </form>
+</mat-dialog-content>

@@ -5,6 +5,9 @@
     <!-- Aqui van los botones de busqueda -->
     <div class="search-buttons">
         <button mat-raised-button color="primary" (click)="getHeroes() ">Todas</button>
+        <button mat-raised-button color="primary" (click)="openAdd()">Añadir</button>
+        <!-- <button mat-raised-button color="primary" (click)="openEdit() ">Editar</button> -->
+        <button mat-raised-button color="primary" (click)="getHeroes() ">Borrar</button>
         <!-- <button mat-raised-button color="primary" (click)="get2dMachines()">2d Tech</button>
         <button mat-raised-button color="primary" (click)="get3dMachines()">3d Tech</button>
         <button mat-raised-button color="primary" (click)="clearInput($event)">Limpiar</button> -->
@@ -50,3 +53,20 @@
 
 
 </div>
+
+<!-- se crea un modal con un pequeño formulario para agregar los heroes, que solo es visible cuando se
+da click en el boton añadir -->
+<mat-dialog-content >
+    <h1 mat-dialog-title>Añadir Maquina</h1>
+    <form [formGroup]="form" (ngSubmit)="addHeroe($event)">
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <input matInput formControlName="descripcion">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Añadir</button>
+    </form>
+</mat-dialog-content>

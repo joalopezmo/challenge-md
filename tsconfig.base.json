@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@challenge-md/ui": ["lib/ui/src/index.ts"],
+      "@env/*": ["environments/*"],
       "table/Routes": ["apps/table/src/app/remote-entry/entry.routes.ts"]
     }
   },

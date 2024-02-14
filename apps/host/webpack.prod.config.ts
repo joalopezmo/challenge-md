@@ -1,4 +1,5 @@
 import { withModuleFederation } from '@nx/angular/module-federation';
+import { environment } from '../../environments/environment';
 import config from './module-federation.config';
 
 export default withModuleFederation({
@@ -13,5 +14,5 @@ export default withModuleFederation({
    *   ['app2', 'https://app2.example.com'],
    * ]
    */
-  remotes: [['table', 'http://localhost:4200/table']],
+  remotes: [['table', environment.tableUrl]],
 });
