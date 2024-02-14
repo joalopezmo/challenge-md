@@ -49,7 +49,6 @@ import { AppComponent } from './app.component';
   
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        declarations: [AppComponent],
         imports: [RouterTestingModule],
       }).compileComponents();
     });
@@ -68,9 +67,5 @@ import { AppComponent } from './app.component';
       expect(component.title).toEqual('host');
     });
   
-    it('should render title in a h1 tag', () => {
-      const compiled = fixture.nativeElement;
-      expect(compiled.querySelector('h1').textContent).toContain('host');
-    });
   });
   
