@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedMaterialUiModule } from '@challenge-md/ui';
 import { AppComponent } from './app.component';
@@ -10,6 +10,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         SharedMaterialUiModule,
+        BrowserAnimationsModule,
         RouterTestingModule.withRoutes([
           { path: '', component: NxWelcomeComponent },
         ]),
