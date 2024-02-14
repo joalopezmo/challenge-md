@@ -5,12 +5,33 @@ mat-drawer-container {
     justify-content: center;
     height: 100vh;
     width: 100vw;
+    color: black;
 
     mat-drawer {
         flex: 1;
         padding-left: 1.5%;
         padding-right: 1%;
         padding-top: 1.5%;
+
+        ul{
+            li{
+                list-style-type: none;
+                //no decoration to a tags
+                padding: 1%;
+                margin: 1%;
+                background-color: #f0f0f073;
+                border-radius: 5px;
+                border: solid 1px #e0e0e0;
+                cursor: pointer;
+                &:hover {
+                    background-color: #e0e0e0;
+                }
+                a{
+                    text-decoration: none;
+                    color: black;
+                }
+            }
+        }
 
     }
 
@@ -20,6 +41,7 @@ mat-drawer-container {
         height: 90%;
         width: 85vw;
         background-color: gainsboro;
+        color: black;
     }
 
     // mat-drawer-content {}
