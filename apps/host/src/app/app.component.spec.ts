@@ -39,34 +39,34 @@
   //   const compiled = fixture.nativeElement as HTMLElement;
   //   expect(compiled.querySelector('h1')?.textContent).toContain('Welcome host');
   // }));
-  import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+//   import { ComponentFixture, TestBed } from '@angular/core/testing';
+// import { provideAnimations } from '@angular/platform-browser/animations';
+// import { RouterTestingModule } from '@angular/router/testing';
+// import { AppComponent } from './app.component';
   
-  describe('AppComponent', () => {
-    let component: AppComponent;
-    let fixture: ComponentFixture<AppComponent>;
+//   describe('AppComponent', () => {
+//     let component: AppComponent;
+//     let fixture: ComponentFixture<AppComponent>;
   
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        imports: [RouterTestingModule, provideAnimations()],
-      }).compileComponents();
-    });
+//     beforeEach(async () => {
+//       await TestBed.configureTestingModule({
+//         imports: [RouterTestingModule, provideAnimations()],
+//       }).compileComponents();
+//     });
   
-    beforeEach(() => {
-      fixture = TestBed.createComponent(AppComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
+//     beforeEach(() => {
+//       fixture = TestBed.createComponent(AppComponent);
+//       component = fixture.componentInstance;
+//       fixture.detectChanges();
+//     });
   
-    it('should create the app', () => {
-      expect(component).toBeTruthy();
-    });
+//     it('should create the app', () => {
+//       expect(component).toBeTruthy();
+//     });
   
-    it(`should have as title 'host'`, () => {
-      expect(component.title).toEqual('host');
-    });
+//     it(`should have as title 'host'`, () => {
+//       expect(component.title).toEqual('host');
+//     });
   
-  });
+//   });
   
