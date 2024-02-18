@@ -1,21 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  MatDialog,
-  MatDialogContent
-} from '@angular/material/dialog';
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatDialog, MatDialogContent } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SharedMaterialUiModule } from '@challenge-md/ui';
 import { BehaviorSubject } from 'rxjs';
 import { Heroe } from '../../interfaces/heroe.interface';
 import { TableServiceService } from '../../services/table-service.service';
+import { ModalAddComponent } from './modal-add/modal-add.component';
 
 @Component({
   selector: 'challenge-md-table',
   standalone: true,
-  imports: [CommonModule, SharedMaterialUiModule, HttpClientModule, ReactiveFormsModule, MatDialogContent],
+  imports: [
+    CommonModule,
+    SharedMaterialUiModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatDialogContent,
+  ],
   providers: [TableServiceService],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
@@ -26,14 +35,16 @@ export class TableComponent implements OnInit {
   dataSource = new MatTableDataSource<Heroe>([]);
   form!: FormGroup;
 
-
-  constructor(private tableService: TableServiceService, public dialog: MatDialog) {}
+  constructor(
+    private tableService: TableServiceService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit() {
-    this.tableService.getHeroes().subscribe((heroes) => {
-      console.log(heroes);
-      this.heroes.next(heroes);
-      this.dataSource = new MatTableDataSource(heroes);
+    this.tableService.getHeroes().subscribe((response: any) => {
+      console.log(response);
+      this.heroes.next(response);
+      this.dataSource = new MatTableDataSource<Heroe>(this.heroes.value);
     });
     this.form = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
@@ -44,17 +55,7 @@ export class TableComponent implements OnInit {
   getHeroes() {
     this.tableService.getHeroes().subscribe((heroes) => {
       this.heroes.next(heroes);
-      this.dataSource = new MatTableDataSource(heroes);
-    });
-  }
-
-  getHeroeById(id: number) {
-    this.tableService.getHeroeById(id).subscribe((heroe) => {
-      console.log(heroe);
-      if (heroe) {
-        this.heroes.next([heroe]);
-        this.dataSource = new MatTableDataSource([heroe]);
-      }
+      this.dataSource = new MatTableDataSource<Heroe>(heroes);
     });
   }
 
@@ -62,15 +63,19 @@ export class TableComponent implements OnInit {
     const filterValue = event.target.value.trim().toLowerCase();
     const filteredHeroes = this.heroes.value.filter((heroe) => {
       return (
-        heroe.id ||
         heroe.nombre.toLowerCase().includes(filterValue) ||
-        heroe.descripcion.toLowerCase().includes(filterValue)
+        heroe.descripcion.toLowerCase().includes(filterValue) ||
+        heroe.id.toString().includes(filterValue)
       );
     });
     //se actualiza la tabla
     this.heroes.next(filteredHeroes);
     // this.dataSource = new MatTableDataSource<machine>(this.machines.value);
     this.dataSource.data = filteredHeroes;
+    //si el valor del filtro es vacio, se vuelven a mostrar todos los heroes
+    if (filterValue === '') {
+      this.getHeroes();
+    }
   }
 
   sortHeroes(sort: string) {
@@ -89,7 +94,7 @@ export class TableComponent implements OnInit {
 
   openEdit(heroe: Heroe) {
     const dialogRef = this.dialog.open(MatDialogContent);
-    if(this.form.valid){
+    if (this.form.valid) {
       this.tableService.updateHeroe(heroe).subscribe(() => {
         this.getHeroes();
       });
@@ -99,14 +104,17 @@ export class TableComponent implements OnInit {
     });
   }
 
-  openAdd(){
+  openAdd() {
     const heroe = {} as Heroe;
     this.addHeroe(heroe);
   }
   addHeroe(heroe: Heroe) {
     //abre el mat-dialog de añadir heroe, lee el formulario reactivo y envia el post en el servicio
-    const dialogRef = this.dialog.open(MatDialogContent);
-    if(this.form.valid){
+    const dialogRef = this.dialog.open(ModalAddComponent, {
+      width: '250px',
+      data: { heroe },
+    });
+    if (this.form.valid) {
       heroe.id = this.heroes.value.length + 1;
       heroe.nombre = this.form.get('nombre')?.value;
       heroe.descripcion = this.form.get('descripcion')?.value;

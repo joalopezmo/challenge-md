@@ -5,7 +5,7 @@
   "scripts": {
     "build": "nx run host:build:production",
     "test": "nx test host",
-    "serve": "nx serve host --devRemotes=dashboard",
+    "serve": "nx serve host --devRemotes=table",
     "e2e-host": "nx e2e host --ui"
   },
   "private": true,

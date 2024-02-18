@@ -17,7 +17,7 @@
     <!-- Aqui va el filtro aplicado sobre la tabla -->
     <mat-form-field>
         <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="filterHeroes($event)" placeholder="Ex. i-5" #input>
+        <input matInput (keyup)="filterHeroes($event)" placeholder="Filtro" #input>
     </mat-form-field>
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -56,7 +56,7 @@
 
 <!-- se crea un modal con un pequeño formulario para agregar los heroes, que solo es visible cuando se
 da click en el boton añadir -->
-<mat-dialog-content >
+<mat-dialog-content>
     <h1 mat-dialog-title>Añadir Maquina</h1>
     <form [formGroup]="form" (ngSubmit)="addHeroe($event)">
         <mat-form-field>

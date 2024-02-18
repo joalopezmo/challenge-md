@@ -1,21 +1,40 @@
 //crear el modal-add component
 
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { TableServiceService } from '../../services/table-service.service';
-
+import { Component, Inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { SharedMaterialUiModule } from '@challenge-md/ui';
+import { TableServiceService } from '../../../services/table-service.service';
 
 @Component({
   selector: 'challenge-md-modal-add',
+  standalone: true,
+  imports: [SharedMaterialUiModule, FormsModule, ReactiveFormsModule],
+  providers: [TableServiceService],
   templateUrl: './modal-add.component.html',
   styleUrls: ['./modal-add.component.scss'],
 })
-
 export class ModalAddComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(public dialogRef: MatDialogRef<ModalAddComponent>, private tableService: TableServiceService) {}
+  constructor(
+    public dialogRef: MatDialogRef<ModalAddComponent>,
+    private tableService: TableServiceService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
     this.form = new FormGroup({
