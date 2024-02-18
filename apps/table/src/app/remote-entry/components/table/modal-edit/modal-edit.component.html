@@ -1,7 +1,7 @@
 <!-- crea el componente en html para el  -->
 <mat-dialog-content>
-    <h1 mat-dialog-title>Editar Maquina</h1>
-    <form [formGroup]="form" (ngSubmit)="editHeroe($event)">
+    <h1 mat-dialog-title>Editar Heroe</h1>
+    <form [formGroup]="form" (ngSubmit)="save()">
         <mat-form-field>
             <mat-label>Nombre</mat-label>
             <input matInput formControlName="nombre">

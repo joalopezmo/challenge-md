@@ -14,6 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Heroe } from '../../interfaces/heroe.interface';
 import { TableServiceService } from '../../services/table-service.service';
 import { ModalAddComponent } from './modal-add/modal-add.component';
+import { ModalEditComponent } from './modal-edit/modal-edit.component';
 
 @Component({
   selector: 'challenge-md-table',
@@ -24,6 +25,8 @@ import { ModalAddComponent } from './modal-add/modal-add.component';
     HttpClientModule,
     ReactiveFormsModule,
     MatDialogContent,
+    ModalAddComponent,
+    ModalEditComponent,
   ],
   providers: [TableServiceService],
   templateUrl: './table.component.html',
@@ -31,7 +34,7 @@ import { ModalAddComponent } from './modal-add/modal-add.component';
 })
 export class TableComponent implements OnInit {
   heroes: BehaviorSubject<Heroe[]> = new BehaviorSubject<Heroe[]>([]);
-  displayedColumns: string[] = ['id', 'nombre', 'descripcion'];
+  displayedColumns: string[] = ['id', 'nombre', 'descripcion', 'action'];
   dataSource = new MatTableDataSource<Heroe>([]);
   form!: FormGroup;
 
@@ -42,7 +45,6 @@ export class TableComponent implements OnInit {
 
   ngOnInit() {
     this.tableService.getHeroes().subscribe((response: any) => {
-      console.log(response);
       this.heroes.next(response);
       this.dataSource = new MatTableDataSource<Heroe>(this.heroes.value);
     });
@@ -54,6 +56,7 @@ export class TableComponent implements OnInit {
 
   getHeroes() {
     this.tableService.getHeroes().subscribe((heroes) => {
+      console.log(JSON.stringify(heroes));
       this.heroes.next(heroes);
       this.dataSource = new MatTableDataSource<Heroe>(heroes);
     });
@@ -70,7 +73,6 @@ export class TableComponent implements OnInit {
     });
     //se actualiza la tabla
     this.heroes.next(filteredHeroes);
-    // this.dataSource = new MatTableDataSource<machine>(this.machines.value);
     this.dataSource.data = filteredHeroes;
     //si el valor del filtro es vacio, se vuelven a mostrar todos los heroes
     if (filterValue === '') {
@@ -78,35 +80,44 @@ export class TableComponent implements OnInit {
     }
   }
 
-  sortHeroes(sort: string) {
-    this.tableService.sortHeroes(sort).subscribe((heroes) => {
-      this.heroes.next(heroes);
-      this.dataSource = new MatTableDataSource(heroes);
-    });
-  }
-
-  searchHeroe(term: string) {
-    this.tableService.searchHeroe(term).subscribe((heroes) => {
-      this.heroes.next(heroes);
-      this.dataSource = new MatTableDataSource(heroes);
-    });
-  }
-
   openEdit(heroe: Heroe) {
-    const dialogRef = this.dialog.open(MatDialogContent);
-    if (this.form.valid) {
-      this.tableService.updateHeroe(heroe).subscribe(() => {
-        this.getHeroes();
-      });
-    }
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+    const dialogRef = this.dialog.open(ModalEditComponent, {
+      width: '250px',
+      data: { heroe }, // Pasamos el héroe al modal a través de la propiedad data
+    });
+    dialogRef.afterClosed().subscribe((result: Heroe | undefined) => {
+      if (result) {
+        // Si se ha devuelto un héroe modificado desde el modal, actualizamos el héroe en la lista
+        this.tableService.updateHeroe(result).subscribe((updatedHeroes) => {
+          // Actualizamos la lista de héroes en el componente
+          this.getHeroes();
+        });
+      }
     });
   }
 
   openAdd() {
-    const heroe = {} as Heroe;
-    this.addHeroe(heroe);
+    // const heroe = {} as Heroe;
+    // this.addHeroe(heroe);
+    const dialogRef = this.dialog.open(ModalAddComponent, {
+      width: '250px',
+      data: { heroe: {} as Heroe },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.tableService.addHeroe(result).subscribe(() => {
+          // this.heroes.next(result);
+          // this.dataSource = new MatTableDataSource(result);
+          this.getHeroes();
+        });
+      }
+    });
+  }
+  deleteHeroe(heroe: Heroe) {
+    this.tableService.deleteHeroe(heroe.id).subscribe(() => {
+      this.getHeroes();
+    });
   }
   addHeroe(heroe: Heroe) {
     //abre el mat-dialog de añadir heroe, lee el formulario reactivo y envia el post en el servicio
@@ -118,12 +129,13 @@ export class TableComponent implements OnInit {
       heroe.id = this.heroes.value.length + 1;
       heroe.nombre = this.form.get('nombre')?.value;
       heroe.descripcion = this.form.get('descripcion')?.value;
-      this.tableService.addHeroe(heroe).subscribe(() => {
-        this.getHeroes();
+      this.tableService.addHeroe(heroe).subscribe((result) => {
+        //se actualiza la tabla
+        this.heroes.next(result);
+        this.dataSource = new MatTableDataSource(result);
       });
     }
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    dialogRef.afterClosed().subscribe(() => {});
   }
 }

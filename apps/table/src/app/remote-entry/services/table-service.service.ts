@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Heroe } from '../interfaces/heroe.interface';
 
 @Injectable({
@@ -8,74 +8,54 @@ import { Heroe } from '../interfaces/heroe.interface';
 })
 export class TableServiceService {
   private url = 'assets/heroes.json';
+  heroesObservable = new BehaviorSubject<Heroe[]>([]);
+  heroe!: Heroe;
 
   constructor(private http: HttpClient) {}
 
   getHeroes(): Observable<Heroe[]> {
-    return this.http.get<Heroe[]>(this.url);
-  }
-
-  getHeroeById(id: number): Observable<Heroe | undefined> {
-    return this.http
-      .get<Heroe[]>(this.url)
-      .pipe(
-        map((heroes: Heroe[]) => heroes.find((heroe: Heroe) => heroe.id === id))
+    if (this.heroesObservable.value.length > 0)
+      return this.heroesObservable.asObservable();
+    // Si ya hay datos, retornamos el Observable actualizado
+    else {
+      return this.http.get<Heroe[]>(this.url).pipe(
+        map((heroes: Heroe[]) => {
+          this.heroesObservable.next(heroes);
+          return this.heroesObservable.value;
+        })
       );
+    }
   }
 
-  addHeroe(heroe: Heroe): Observable<Heroe> {
-    return this.http.post<Heroe>(this.url, heroe);
+  // Método para agregar un héroe
+  addHeroe(heroe: Heroe): Observable<Heroe[]> {
+    const heroes = this.heroesObservable.value;
+    const newId = heroes.length + 1;
+    heroe.id = newId;
+    const updatedHeroes = heroes.concat(heroe); // Concatenar el nuevo héroe al array existente
+    this.heroesObservable.next(updatedHeroes); // Emitir el array actualizado
+    return this.heroesObservable.asObservable(); // Retornamos el Observable actualizado
   }
 
-  updateHeroe(heroe: Heroe): Observable<Heroe> {
-    return this.http.put<Heroe>(this.url, heroe);
+  updateHeroe(heroe: Heroe): Observable<Heroe[]> {
+    const heroes = this.heroesObservable.value;
+    const index = heroes.findIndex((h) => h.id === heroe.id);
+    if (index !== -1) {
+      // Actualizamos el héroe en el array
+      heroes[index] = heroe;
+      // Emitimos el nuevo array de héroes
+      this.heroesObservable.next(heroes);
+    }
+    return this.heroesObservable.asObservable();
   }
 
-  deleteHeroe(id: number): Observable<Heroe> {
-    return this.http.delete<Heroe>(`${this.url}/${id}`);
-  }
-
-  searchHeroe(term: string): Observable<Heroe[]> {
-    return this.http
-      .get<Heroe[]>(this.url)
-      .pipe(
-        map((heroes: Heroe[]) =>
-          heroes.filter((heroe: Heroe) =>
-            heroe.nombre.toLowerCase().includes(term.toLowerCase())
-          )
-        )
-      );
-  }
-
-  sortHeroes(sort: string): Observable<Heroe[]> {
-    return this.http
-      .get<Heroe[]>(this.url)
-      .pipe(
-        map((heroes: Heroe[]) =>
-          heroes.sort((a: Heroe, b: Heroe) => a.nombre.localeCompare(b.nombre))
-        )
-      );
-  }
-
-  filterHeroes(filter: string): Observable<Heroe[]> {
-    return this.http
-      .get<Heroe[]>(this.url)
-      .pipe(
-        map((heroes: Heroe[]) =>
-          heroes.filter((heroe: Heroe) =>
-            heroe.nombre.toLowerCase().includes(filter.toLowerCase())
-          )
-        )
-      );
-  }
-
-  paginateHeroes(page: number, pageSize: number): Observable<Heroe[]> {
-    return this.http
-      .get<Heroe[]>(this.url)
-      .pipe(
-        map((heroes: Heroe[]) =>
-          heroes.slice(page * pageSize, page * pageSize + pageSize)
-        )
-      );
+  deleteHeroe(id: number): Observable<Heroe[]> {
+    const heroes = this.heroesObservable.value;
+    const index = heroes.findIndex((h) => h.id === id);
+    if (index !== -1) {
+      heroes.splice(index, 1);
+      this.heroesObservable.next(heroes);
+    }
+    return this.heroesObservable.asObservable();
   }
 }

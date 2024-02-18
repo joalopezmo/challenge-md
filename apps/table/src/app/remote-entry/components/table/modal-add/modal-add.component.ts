@@ -26,7 +26,7 @@ export class ModalAddComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ModalAddComponent>,
-    private tableService: TableServiceService,
+    @Inject(TableServiceService) private tableService: TableServiceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder
   ) {
@@ -44,8 +44,10 @@ export class ModalAddComponent implements OnInit {
   }
 
   save() {
+    console.log(this.form.value);
     if (this.form.valid) {
       this.tableService.addHeroe(this.form.value).subscribe((heroe) => {
+        //se crea el heroe y se le asigna los valores del formulario
         this.dialogRef.close(heroe);
       });
     }
