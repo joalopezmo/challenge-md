@@ -33,9 +33,11 @@ export class ModalEditComponent implements OnInit {
 
   save() {
     if (this.form.valid) {
-      this.tableService.updateHeroe({ ...this.data, ...this.form.value }).subscribe((heroe) => {
-        this.dialogRef.close(heroe);
-      });
+      // this.tableService.updateHeroe({ ...this.data, ...this.form.value }).subscribe((heroe) => {
+      //   this.dialogRef.close(heroe);
+      // });
+      // si el form es valido pasa el heroe al componente que invoco al modal y cierra el dialogo
+      this.dialogRef.close({ ...this.data, ...this.form.value });
     }
   }
 }
