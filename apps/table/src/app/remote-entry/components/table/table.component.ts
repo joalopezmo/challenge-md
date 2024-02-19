@@ -86,12 +86,13 @@ export class TableComponent implements OnInit {
       data: { heroe }, // Pasamos el héroe al modal a través de la propiedad data
     });
     dialogRef.afterClosed().subscribe((result: Heroe | undefined) => {
+      //se edita el heroe de la lista 
       if (result) {
-        // Si se ha devuelto un héroe modificado desde el modal, actualizamos el héroe en la lista
-        this.tableService.updateHeroe(result).subscribe((updatedHeroes) => {
-          // Actualizamos la lista de héroes en el componente
-          this.getHeroes();
-        });
+        const arr = this.heroes.value;
+        const index = arr.indexOf(heroe);
+        arr[index] = result;
+        this.heroes.next(arr);
+        this.dataSource = new MatTableDataSource(arr);
       }
     });
   }
@@ -115,9 +116,12 @@ export class TableComponent implements OnInit {
     });
   }
   deleteHeroe(heroe: Heroe) {
-    this.tableService.deleteHeroe(heroe.id).subscribe(() => {
-      this.getHeroes();
-    });
+    // se elimina de la lista de heroes
+    const arr = this.heroes.value;
+    const index = arr.indexOf(heroe);
+    arr.splice(index, 1);
+    this.heroes.next(arr);
+    this.dataSource = new MatTableDataSource(arr);
   }
   addHeroe(heroe: Heroe) {
     //abre el mat-dialog de añadir heroe, lee el formulario reactivo y envia el post en el servicio
