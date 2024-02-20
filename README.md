@@ -24,7 +24,7 @@ ui: contains the shared ui modules importated from angular material. The library
 ## Running the project
 To run the project, you need to run the following commands:
 
-npm install
+npm install <br>
 nx serve host (in a terminal) to run the host application, the main application of the project. Be sure to install nx globally (npm install -g nx) to run the command.
 npm run serve is a custom command that runs the table application. It is a custom command that runs the following commands:
     "build": "nx run host:build:production",
