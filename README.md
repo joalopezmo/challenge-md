@@ -29,7 +29,7 @@ nx serve host (in a terminal) to run the host application, the main application 
 npm run serve is a custom command that runs the table application. It is a custom command that runs the following commands:
     "build": "nx run host:build:production",
     "test": "nx test host",
-    "serve": "nx serve host --devRemotes=dashboard"
+    "serve": "nx serve host --devRemotes=table"
 
 ## Running unit tests
 Run nx test host to execute the unit tests via Jest. or nx test host --coverage to get the coverage of the unit testing. The unit testing was only applied to the host application, as it is the main application of the project.
@@ -63,7 +63,7 @@ Targets can be defined in the `package.json` or `projects.json`. Learn more [in 
 
 ## Builder
 
-Just run `nx build demoapp` to build the application. The build artifacts will be stored in the `dist/` directory, ready to be deployed.
+Just run `nx build host` to build the application. The build artifacts will be stored in the `dist/` directory, ready to be deployed.
 
 ## CI/CD
 
